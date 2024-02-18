@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  tests:
+    container_name: webapp.tests
+    network_mode: "host"
+    build:
+      context: .
+      dockerfile: ./tests.Dockerfile
+      target: build
+    command:
+      - /bin/sh
+      - -c
+      - |
+        dotnet test Running-docker-in-docker.sln && \
+        echo "Done!"
+    environment:
+      - TESTCONTAINERS_HOST_OVERRIDE=localhost
+    volumes:
+      - ../.:/src
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker:/var/lib/docker

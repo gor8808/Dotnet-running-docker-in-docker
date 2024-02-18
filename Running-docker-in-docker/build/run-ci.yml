@@ -1,0 +1,18 @@
+trigger:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - checkout: self
+    displayName: "Git Checkout"
+    persistCredentials: true
+
+  - task: DockerCompose@0
+    displayName: 'Run tests'
+    inputs:
+      containerregistrytype: 'Container Registry'
+      dockerComposeFile: 'docker-compose/docker-compose.tests.yml'
+      action: 'Run a Docker Compose command'
+      dockerComposeCommand: 'run tests'
